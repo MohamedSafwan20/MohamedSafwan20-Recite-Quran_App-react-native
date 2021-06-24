@@ -54,10 +54,10 @@ const AppBar = props => {
               type="clear"
               icon={<Icon name="brightness-medium" color="white" />}
             />
-            <Button type="clear" icon={<Icon name="refresh" color="white" />} />
           </View>
         }
       />
+
       {/* Drawer */}
       <Animated.View
         style={{
