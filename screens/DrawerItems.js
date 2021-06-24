@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import {SearchBar} from 'react-native-elements';
-import {Icon} from 'react-native-elements';
 
-function Drawer(props) {
+function DrawerItems(props) {
   const [surah, setSurah] = useState();
 
   return (
@@ -20,10 +19,11 @@ function Drawer(props) {
           backgroundColor: 'white',
           borderBottomColor: 'transparent',
           borderTopColor: 'transparent',
+          borderRadius: 40,
         }}
       />
     </View>
   );
 }
 
-export default Drawer;
+export default DrawerItems;

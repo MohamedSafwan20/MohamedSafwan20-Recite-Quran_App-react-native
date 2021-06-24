@@ -1,13 +1,16 @@
 import React, {useState} from 'react';
 import {View, Text, Animated, Dimensions} from 'react-native';
 import {Header, Icon, Button} from 'react-native-elements';
-import Drawer from '../screens/Drawer';
+import {useDispatch, useSelector} from 'react-redux';
+import Drawer from '../screens/DrawerItems';
 
 const AppBar = props => {
   const height = Dimensions.get('window').height;
   const width = Dimensions.get('window').width;
 
   let value = useState(new Animated.Value(-width))[0];
+  const darkMode = useSelector(state => state.darkModeReducer);
+  const dispatch = useDispatch();
 
   const openAnimation = () => {
     Animated.timing(value, {
@@ -51,6 +54,7 @@ const AppBar = props => {
         rightComponent={
           <View style={{flexDirection: 'row'}}>
             <Button
+              onPress={() => dispatch({type: 'CHANGE', payload: !darkMode})}
               type="clear"
               icon={<Icon name="brightness-medium" color="white" />}
             />
@@ -62,7 +66,7 @@ const AppBar = props => {
       <Animated.View
         style={{
           zIndex: 90,
-          backgroundColor: 'white',
+          backgroundColor: darkMode ? 'black' : 'white',
           flex: 1,
           width: '75%',
           height: height,

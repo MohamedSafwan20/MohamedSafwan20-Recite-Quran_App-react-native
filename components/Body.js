@@ -2,13 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {RefreshControl} from 'react-native';
 import {View, Text, FlatList, ScrollView} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import {useSelector} from 'react-redux';
 
 function Body(props) {
   const [surah, setSurah] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const darkMode = useSelector(state => state.darkModeReducer);
 
   const fetchData = () => {
-    fetch('http://api.alquran.cloud/v1/surah/1')
+    fetch('http://api.alquran.cloud/v1/surah/2')
       .then(res => res.json())
       .then(data => {
         setSurah(data.data);
@@ -24,6 +26,7 @@ function Body(props) {
 
   return (
     <ScrollView
+      style={{backgroundColor: darkMode ? 'black' : null}}
       refreshControl={
         <RefreshControl
           onRefresh={() => {
@@ -46,6 +49,7 @@ function Body(props) {
             borderBottomColor: '#3bd627',
             borderBottomWidth: 3,
             marginBottom: '3%',
+            color: darkMode ? 'white' : 'black',
           }}>
           {surah?.name}
         </Text>
@@ -59,10 +63,11 @@ function Body(props) {
                   fontSize: 24,
                   fontFamily: 'me_quran',
                   letterSpacing: 8,
+                  color: darkMode ? 'white' : 'black',
                 }}>
                 {item.text}
               </Text>
-              <Text style={{fontSize: 18}}>
+              <Text style={{fontSize: 18, color: darkMode ? 'white' : 'black'}}>
                 &#64830;{item.numberInSurah}&#64831;
               </Text>
             </View>
