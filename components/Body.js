@@ -1,16 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList, ScrollView} from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 
 function Body(props) {
   const [ayahs, setAyahs] = useState();
 
   useEffect(() => {
-    fetch('http://api.alquran.cloud/v1/surah/2')
+    fetch('http://api.alquran.cloud/v1/surah/1')
       .then(res => res.json())
       .then(data => {
         setAyahs(data.data.ayahs);
       })
       .catch(err => console.log(err.message));
+    SplashScreen.hide();
   }, []);
 
   console.log(ayahs);
