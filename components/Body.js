@@ -21,15 +21,23 @@ function Body(props) {
           margin: '3%',
           padding: '2%',
           alignItems: 'center',
-          borderColor: 'red',
-          borderWidth: 1,
         }}>
         <FlatList
           data={ayahs}
           keyExtractor={item => item.number}
           renderItem={({item}) => (
             <View>
-              <Text style={{fontSize: 50}}>{item.text}</Text>
+              <Text
+                style={{
+                  fontSize: 24,
+                  fontFamily: 'me_quran',
+                  letterSpacing: 8,
+                }}>
+                {item.text}
+              </Text>
+              <Text style={{fontSize: 18}}>
+                &#64830;{item.numberInSurah}&#64831;
+              </Text>
             </View>
           )}
         />
