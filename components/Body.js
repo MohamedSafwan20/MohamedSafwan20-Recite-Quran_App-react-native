@@ -29,7 +29,7 @@ function Body(props) {
           keyExtractor={item => item.number}
           renderItem={({item}) => (
             <View>
-              <Text style={{fontSize: 50}}>{item.text + '1' + '\u06DD'}</Text>
+              <Text style={{fontSize: 50}}>{item.text}</Text>
             </View>
           )}
         />

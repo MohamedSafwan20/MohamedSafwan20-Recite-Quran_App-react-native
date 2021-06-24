@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <View>
       <AppBar />
-      {/* <Body /> */}
+      <Body />
     </View>
   );
 };
