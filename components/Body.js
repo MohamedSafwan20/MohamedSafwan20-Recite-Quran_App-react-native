@@ -11,9 +11,6 @@ function Body(props) {
   const darkMode = useSelector(state => state.darkModeReducer);
   let [networkError, setNetworkError] = useState(false);
 
-  console.log('searchedSurah');
-  console.log(searchedSurah);
-
   const fetchData = () => {
     fetch('http://api.alquran.cloud/v1/surah/2')
       .then(res => res.json())
