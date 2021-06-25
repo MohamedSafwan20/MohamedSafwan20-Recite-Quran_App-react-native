@@ -5,18 +5,27 @@ import SplashScreen from 'react-native-splash-screen';
 import {useSelector} from 'react-redux';
 
 function Body(props) {
+  const searchedSurah = useSelector(state => state.searchedSurahReducer);
   const [surah, setSurah] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const darkMode = useSelector(state => state.darkModeReducer);
+  let [networkError, setNetworkError] = useState(false);
+
+  console.log('searchedSurah');
+  console.log(searchedSurah);
 
   const fetchData = () => {
     fetch('http://api.alquran.cloud/v1/surah/2')
       .then(res => res.json())
       .then(data => {
+        setNetworkError(false);
         setSurah(data.data);
         if (!isRefreshing) setIsRefreshing(false);
       })
-      .catch(err => console.log(err.message));
+      .catch(err => {
+        setNetworkError(true);
+        console.log(err.message);
+      });
   };
 
   useEffect(() => {
@@ -38,6 +47,23 @@ function Body(props) {
       }>
       <View
         style={{
+          alignItems: 'center',
+          backgroundColor: '#e31a0b',
+          height: 30,
+          display: networkError ? 'flex' : 'none',
+        }}>
+        <Text
+          style={{
+            textAlign: 'center',
+            color: 'white',
+            padding: 5,
+            fontWeight: 'bold',
+          }}>
+          Server Timed out! Please check your Network.
+        </Text>
+      </View>
+      <View
+        style={{
           margin: '3%',
           padding: '2%',
           alignItems: 'center',
@@ -51,10 +77,10 @@ function Body(props) {
             marginBottom: '3%',
             color: darkMode ? 'white' : 'black',
           }}>
-          {surah?.name}
+          {searchedSurah !== null ? searchedSurah.name : surah?.name}
         </Text>
         <FlatList
-          data={surah?.ayahs}
+          data={searchedSurah !== null ? searchedSurah.ayahs : surah?.ayahs}
           keyExtractor={item => item.number}
           renderItem={({item}) => (
             <View>
