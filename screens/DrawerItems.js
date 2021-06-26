@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Picker} from '@react-native-picker/picker';
 
 function DrawerItems(props) {
@@ -11,6 +11,7 @@ function DrawerItems(props) {
   const [searchedSurahValue, setSearchedSurahValue] = useState(null);
   const dispatch = useDispatch();
   let [numberOfAyahs, setNumberOfAyahs] = useState(null);
+  const darkMode = useSelector(state => state.darkModeReducer);
 
   useEffect(() => {
     fetch('http://api.alquran.cloud/v1/meta')
@@ -19,6 +20,7 @@ function DrawerItems(props) {
         setSurah(data.data.surahs.references);
       })
       .catch(err => {
+        dispatch({type: 'CHANGE_NETWORK_ERROR', payload: true});
         console.log(err.message);
       });
   }, []);
@@ -28,10 +30,12 @@ function DrawerItems(props) {
       fetch(`http://api.alquran.cloud/v1/surah/${searchedSurahValue}`)
         .then(res => res.json())
         .then(data => {
+          dispatch({type: 'CHANGE_NETWORK_ERROR', payload: false});
           dispatch({type: 'UPDATE', payload: data.data});
           setSearchedSurah(data.data);
         })
         .catch(err => {
+          dispatch({type: 'CHANGE_NETWORK_ERROR', payload: true});
           console.log(err.message);
         });
     }
@@ -46,9 +50,11 @@ function DrawerItems(props) {
       )
         .then(res => res.json())
         .then(data => {
+          dispatch({type: 'CHANGE_NETWORK_ERROR', payload: false});
           dispatch({type: 'UPDATE', payload: data.data});
         })
         .catch(err => {
+          dispatch({type: 'CHANGE_NETWORK_ERROR', payload: true});
           console.log(err.message);
         });
     }
@@ -57,6 +63,9 @@ function DrawerItems(props) {
   return (
     <View style={{marginTop: 20, width: '90%', alignSelf: 'center'}}>
       <DropDownPicker
+        itemKey="number"
+        listMode="MODAL"
+        theme={darkMode ? 'DARK' : 'LIGHT'}
         schema={{
           label: 'englishName',
           value: 'number',
@@ -66,9 +75,6 @@ function DrawerItems(props) {
         style={{borderColor: '#3bd627'}}
         textStyle={{
           fontSize: 16,
-        }}
-        dropDownContainerStyle={{
-          borderColor: '#3bd627',
         }}
         searchTextInputStyle={{
           borderRadius: 17,
@@ -95,7 +101,9 @@ function DrawerItems(props) {
           marginTop: 15,
           width: '80%',
           alignSelf: 'center',
+          color: darkMode ? 'white' : 'black',
         }}
+        dropdownIconColor={darkMode ? 'white' : 'black'}
         onValueChange={goToAyah}>
         <Picker.Item
           label="Go to Ayah"
